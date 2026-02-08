@@ -1,2 +1,4 @@
-# Output LaTeX style
+# LaTeX
 WUSTReport.sty
+build/
+out/
