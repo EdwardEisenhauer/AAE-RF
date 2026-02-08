@@ -1,0 +1,134 @@
+\documentclass{article}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{siunitx}
+\usepackage{todonotes}
+
+\title{RF Circuits Project Report}
+\author{Sergiusz Warga 230757}
+\date{2026-01-18}
+
+\begin{document}
+
+\maketitle
+
+\section{Introduction}
+
+This report presents the design and measurements of the microstrip high-pass filter.
+The design was made in AWR software\footnote{\url{https://www.cadence.com/en_US/home/tools/system-analysis/rf-microwave-design.html}}.
+
+\paragraph{Project parameters}
+
+\begin{table}
+  \centering
+  \begin{tabular}{c|c}
+    $Z_0$ & 50 Ohm \\
+    $f_0$ & 1.5 GHz \\
+    Window & Chebyshev \\
+    Ripples & 0.5 dB
+  \end{tabular}
+  \caption{Microstrip high-pass filter goal parameters}
+  \label{tab:project_parameters}
+\end{table}
+
+\paragraph{Project goals}
+
+The optimisation task is to achieve the \qty{3}{\dB} loss at $f_0$ and the sharpest slope possible within the PCB constraints.
+The circuit should be analysed up to \qty{3}{\GHz}.
+
+\paragraph{Laminate parameters}
+
+\begin{table}
+  \centering
+  \begin{tabular}{c|c}
+    Dielectric constant (Er) & 4.5 \\
+    Dielectric thickness (H)& 1.6 mm \\
+    Conductor material & copper \\
+    Conductor thickness (t) & 35 um \\
+    Loss tangent (TAN) & 0.02
+  \end{tabular}
+  \caption{Laminate parameters}
+  \label{tab:laminate_parameters}
+\end{table}
+
+\newpage
+\section{Microstrip filter design}
+% Start -> AWR
+% Select all license features
+% Wizards -> iFilter Filter Synthesis -> Design
+The goal was to design a microstrip high-pass filter with a Chebyshev window with the use of shunt stubs with quarter wavelength equal stubs with the ripples below \qty{0.5}{\dB}.
+
+For the initial filter design I used iFilter Filter Synthesis.
+I entered the ripple value of \qty{0.5}{\dB}.
+In the \textit{Specifications} I chose to start with the filter of degree 5.
+I set $F_p$ to \qty{1.5}{\GHz} and $R_s$ and $R_L$ to \qty{50}{\ohm}.
+\todo[inline]{What should I enter in the ElecLng[deg] field?}
+
+In the Design Options I set the Technology's Microstrip to the values from \autoref{tab:laminate_parameters}.
+
+I copy the values:
+
+% Physical Model
+% Dimensions: 106.213mm x 27.8844mm
+% Area: 2961.68mm
+% Layout grid size: 5mm
+% Technology: Microstrip (H=1.6mm, Er=4.5, T=0.035mm, Hu=0mm)
+% Parts
+%   TLN: W=2.9972mm, L=13.638mm
+%   SST: W=3.9809mm, L=12.960mm
+%   STEP: W1=2.9972mm, W2=5.2437mm, Offset=0mm
+%   TLN: W=5.2437mm, L=14.750mm
+%   SST: W=3.9782mm, L=12.962mm
+%   STEP: W1=5.2437mm, W2=5.0860mm, Offset=0mm
+%   TLN: W=5.0860mm, L=14.772mm
+%   SST: W=3.9771mm, L=12.962mm
+%   TLN: W=5.0851mm, L=14.772mm
+%   SST: W=3.9768mm, L=12.963mm
+%   STEP: W1=5.0851mm, W2=5.2409mm, Offset=0mm
+%   TLN: W=5.2409mm, L=14.750mm
+%   SST: W=3.9768mm, L=12.963mm
+%   STEP: W1=5.2409mm, W2=2.9972mm, Offset=0mm
+%   TLN: W=2.9972mm, L=13.638mm
+
+We got it.
+I create New Schematic in Circuit Schematics.
+
+I picked the MSUB Substrate, populated it with the values from \autoref{tab:laminate_parameters}.
+I opened Tools -> TXLine to get the normalized conductivity.
+I divided gold's 4.1 by copper's 5.88 to get $R_{rho}=0.697$
+
+\missingfigure{Circuit schematic from AWR}
+
+\missingfigure{Wideband graph for linear analysis of the circuit}
+
+%wideband means maximum frequency on x axis to be twice the F0 
+%*narrowband means a symmetrical frequency range around F0 that allow for more detailed analysis of the interesting region
+%all the graphs should indicate (on graph or in their description) the interesting data points for analysis
+%the graphs output in AWR can be easily exported to text file by selecting MENU Graph -> Export Trace Data (graph needs to be active on screen)
+
+\newpage
+\section{EM structure analysis}
+
+derived from circuit schematic
+
+\missingfigure{picture of the created EM structure with the 2D mesh on it}
+
+\missingfigure{wideband graph for analysis of the EM structure}
+
+\newpage
+\section{Analysis of the physical board}
+
+\missingfigure{picture of the created layout for fabricating 
+the PCB (from the selected by yourself PCB designing software)}
+
+\missingfigure{photo of the fabricated PCB and wideband graph 
+for measurements of the PCB}
+
+\newpage
+\section{Conclusions}
+
+\missingfigure{Wideband and narrowband combined graphs}
+
+\todo[inline]{Write comments/conclusions}
+
+\end{document}
